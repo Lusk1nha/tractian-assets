@@ -2,32 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background: rgba(227, 234, 239, 1);
+    --foreground: rgba(255, 255, 255, 1);
+
+    --primary: rgba(33, 136, 255, 1);
+    --secondary: rgba(2, 59, 120, 1);
+    --tertiary: rgba(23, 25, 45, 1);
+
+    --text-bolder: rgba(36, 41, 47, 1);
+    --text-medium: rgba(23, 25, 45, 1);
+    --text-foreground: rgba(136, 146, 156, 1);
+    --text-light: rgba(119, 129, 140, 1);
+    --text-ligher: rgba(193, 201, 210, 1);
+
+    --border: rgba(216, 223, 230, 1);
+    --border-primary: rgba(85, 166, 255, 1);
+
+    --rounded-sm: 0.125rem;
+    --rounded-md: 0.188rem;
+    --rounded-lg: 0.25rem;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@layer base {
+  body {
+    @apply bg-background text-foreground;
   }
 }
