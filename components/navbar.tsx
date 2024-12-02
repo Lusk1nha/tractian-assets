@@ -1,36 +1,35 @@
-import { Unit } from "@/types/unit";
-import { UnitIcon } from "./icons/unit-icon";
 import { Logo } from "./logo";
-import { SearchButton } from "./ui/button";
+import { GetCompanies } from "./get-companies/get-companies";
 
 export function Navbar() {
-  const units: Unit[] = [
-    {
-      name: "Apex Unit",
-      value: "apex",
-    },
-    {
-      name: "Tobias Unit",
-      value: "tobias",
-    },
-    {
-      name: "Jaguar Unit",
-      value: "jaguar",
-    },
-  ];
-
   return (
-    <nav className="bg-tertiary text-white h-12 flex items-center justify-between px-4">
+    <>
+      <div className="hidden lg:flex">
+        <DesktopNavbar />
+      </div>
+
+      <div className="w-full flex fixed bottom-0 lg:hidden">
+        <MobileNavbar />
+      </div>
+    </>
+  );
+}
+
+function DesktopNavbar() {
+  return (
+    <nav className="w-full bg-tertiary text-white h-12 flex items-center justify-between px-4 gap-x-2">
       <Logo />
 
-      <div className="flex items-center gap-x-2.5">
-        {units.map((unit) => (
-          <SearchButton key={unit.value} query="unit" value={unit.value}>
-            <UnitIcon />
-            {unit.name}
-          </SearchButton>
-        ))}
-      </div>
+      <GetCompanies />
+    </nav>
+  );
+}
+
+function MobileNavbar() {
+  return (
+    <nav className="w-full bg-tertiary text-white h-12 py-2 flex items-center justify-between px-4 gap-x-2">
+      <Logo />
+      <GetCompanies />
     </nav>
   );
 }

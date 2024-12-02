@@ -15,6 +15,7 @@ const config: Config = {
         secondary: "var(--secondary)",
         tertiary: "var(--tertiary)",
         textBolder: "var(--text-bolder)",
+        textBold: "var(--text-bold)",
         textMedium: "var(--text-medium)",
         textForeground: "var(--text-foreground)",
         textLight: "var(--text-light)",
@@ -29,6 +30,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };
 export default config;

@@ -12,10 +12,11 @@
     --tertiary: rgba(23, 25, 45, 1);
 
     --text-bolder: rgba(36, 41, 47, 1);
-    --text-medium: rgba(23, 25, 45, 1);
-    --text-foreground: rgba(136, 146, 156, 1);
+    --text-bold: rgba(23, 25, 45, 1);
+    --text-foreground: rgba(255, 255, 255, 1);
+    --text-medium: rgba(136, 146, 156, 1);
     --text-light: rgba(119, 129, 140, 1);
-    --text-ligher: rgba(193, 201, 210, 1);
+    --text-lighter: rgba(193, 201, 210, 1);
 
     --border: rgba(216, 223, 230, 1);
     --border-primary: rgba(85, 166, 255, 1);
