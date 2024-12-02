@@ -2,6 +2,7 @@ import { AlertIcon } from "@/components/icons/alert-icon";
 import { EnergyIcon } from "@/components/icons/energy-icon";
 import { Badge } from "@/components/ui/badge";
 import { SearchAssets } from "../_components/search-assets";
+import { Suspense } from "react";
 
 export default function Home() {
   return (
@@ -15,7 +16,9 @@ export default function Home() {
         </div>
 
         <div className="w-full h-full border border-border rounded-md overflow-hidden">
-          <SearchAssets />
+          <Suspense fallback="loading...">
+            <SearchAssets />
+          </Suspense>
         </div>
       </div>
 

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { TreeNode } from "./render-assets-tree";
 import { Locations } from "@/types/locations";
 import { Assets } from "@/types/assets";
