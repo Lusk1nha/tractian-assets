@@ -1,14 +1,19 @@
-import { TractianRepo } from "@/repositories/tractian-repo";
 import { Suspense } from "react";
 import { RenderCompanies } from "./render-companies";
+import tractianService from "@/shared/http/tractian-instance";
 
-export function GetCompanies() {
-  const { getAllCompanies } = new TractianRepo();
-  const companies = getAllCompanies();
+async function getCompanies() {
+  "use cache";
+  const companies = await tractianService.getOrderedCompanies();
+  return companies;
+}
+
+export async function GetCompanies() {
+  const companies = await getCompanies();
 
   return (
     <Suspense fallback="loading companies...">
-      <RenderCompanies response={companies} />
+      <RenderCompanies companies={companies} />
     </Suspense>
   );
 }

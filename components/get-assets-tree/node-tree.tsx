@@ -5,10 +5,14 @@ import { Locations } from "@/types/locations";
 import { Assets } from "@/types/assets";
 import { cn } from "@/lib/utils";
 import { ChevronDownIcon } from "../icons/chevron-down-icon";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { LocationIcon } from "../icons/location-icon";
 import { BoxIcon } from "../icons/box-icon";
 import { TileIcon } from "../icons/tile-icon";
+
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { AssetContext } from "../providers/asset-provider";
 
 interface INodeTreeProps {
   companyId: string;
@@ -37,7 +41,7 @@ function getNodeIcon(
 export function NodeTree(props: Readonly<INodeTreeProps>) {
   const { nodeIndex, companyId, node } = props;
 
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const paddingByIndex = 6 * nodeIndex + "px";
 
@@ -69,13 +73,7 @@ export function NodeTree(props: Readonly<INodeTreeProps>) {
           )}
         </div>
 
-        <div className="w-[22px] h-[22px] flex items-center justify-center text-primary">
-          {getNodeIcon(node)}
-        </div>
-
-        <span className="font-normal text-sm text-textBold uppercase px-1">
-          {node.data.name}
-        </span>
+        <NodeDetails companyId={companyId} node={node} />
       </div>
 
       {isOpen &&
@@ -87,6 +85,59 @@ export function NodeTree(props: Readonly<INodeTreeProps>) {
             node={child}
           />
         ))}
+    </div>
+  );
+}
+
+interface INodeDetailsProps {
+  companyId: string;
+  node: TreeNode<
+    | Locations
+    | (Assets & {
+        type: "location" | "asset";
+      })
+  >;
+}
+export function NodeDetails(props: Readonly<INodeDetailsProps>) {
+  const { companyId, node } = props;
+
+  const nodeId = node.id;
+  const searchParams = useSearchParams();
+  const name = searchParams.get("name");
+
+  const { setAsset } = useContext(AssetContext);
+
+  if (node.type === "asset") {
+    return (
+      <Link
+        className="w-full flex items-center"
+        href={{
+          pathname: `/company/${companyId}/asset/${nodeId}`,
+          query: { name },
+        }}
+        onClick={() => setAsset(node as any)}
+        passHref
+      >
+        <div className="w-[22px] h-[22px] flex items-center justify-center text-primary">
+          {getNodeIcon(node)}
+        </div>
+
+        <span className="font-normal text-sm text-textBold uppercase px-1">
+          {node.data.name}
+        </span>
+      </Link>
+    );
+  }
+
+  return (
+    <div className="w-full flex items-center">
+      <div className="w-[22px] h-[22px] flex items-center justify-center text-primary">
+        {getNodeIcon(node)}
+      </div>
+
+      <span className="font-normal text-sm text-textBold uppercase px-1">
+        {node.data.name}
+      </span>
     </div>
   );
 }

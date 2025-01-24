@@ -8,10 +8,10 @@ import { NodeTree } from "./node-tree";
 
 interface IRenderAssetsTreeProps {
   companyId: string;
+  search?: string;
 
   assets: Assets[];
   locations: Locations[];
-  search?: string;
 }
 
 // Define the TreeNode interface
@@ -33,12 +33,12 @@ export function RenderAssetsTree(props: Readonly<IRenderAssetsTreeProps>) {
       ...assets.map((asset) => ({ ...asset, type: "asset" as const })),
     ];
 
-    if (!search) return allItems;
+    if (!search || !search.length) return allItems;
 
     return allItems.filter((asset) => {
-      const nameWithoutAccents = getStringToSearch(asset.name);
       const searchWithoutAccents = getStringToSearch(search);
 
+      const nameWithoutAccents = getStringToSearch(asset.name);
       return nameWithoutAccents.includes(searchWithoutAccents);
     });
   }, [assets, locations, search]);

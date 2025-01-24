@@ -1,4 +1,8 @@
-export function TractianLogo(props: Readonly<React.SVGProps<SVGSVGElement>>) {
+import { memo } from "react";
+
+export const TractianLogo = memo(function TractianLogo(
+  props: Readonly<React.SVGProps<SVGSVGElement>>
+) {
   return (
     <svg
       width="103"
@@ -14,4 +18,4 @@ export function TractianLogo(props: Readonly<React.SVGProps<SVGSVGElement>>) {
       />
     </svg>
   );
-}
+});

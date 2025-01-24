@@ -1,19 +1,24 @@
 "use client";
 
-import { SearchInput } from "@/components/inputs/search-input";
 import { GetAssetsTree } from "@/components/get-assets-tree/get-assets-tree";
-import { useSearchParams } from "next/navigation";
+import { SearchInput } from "@/components/inputs/search-input";
+import { Assets } from "@/types/assets";
+import { Locations } from "@/types/locations";
 import { useState } from "react";
 
-export function SearchAssets() {
-  const searchParams = useSearchParams();
-  const [search, setSearch] = useState<string>("");
+interface ISearchAssetsProps {
+  companyId: string;
 
-  const unit = searchParams.get("unit") ?? "";
+  assets: Assets[];
+  locations: Locations[];
 
-  if (!unit) {
-    return null;
-  }
+  defaultSearch?: string;
+}
+
+export function SearchAssets(props: Readonly<ISearchAssetsProps>) {
+  const { companyId, assets, locations, defaultSearch } = props;
+
+  const [search, setSearch] = useState<string>(defaultSearch ?? "");
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -27,7 +32,12 @@ export function SearchAssets() {
       </div>
 
       <div className="w-full h-full">
-        <GetAssetsTree companyId={unit} search={search} />
+        <GetAssetsTree
+          companyId={companyId}
+          search={search}
+          assets={assets}
+          locations={locations}
+        />
       </div>
     </div>
   );

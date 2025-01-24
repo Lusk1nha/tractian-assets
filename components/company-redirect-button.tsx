@@ -2,27 +2,28 @@
 
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
-interface ISearchButtonProps {
+interface ICompanyRedirectButtonProps {
   className?: string;
-  query: string;
   value: string;
+  query: Record<string, string>;
   children: React.ReactNode;
 }
 
-export function SearchButton(props: Readonly<ISearchButtonProps>) {
-  const { className, query, value, children } = props;
+export function CompanyRedirectButton(
+  props: Readonly<ICompanyRedirectButtonProps>
+) {
+  const { className, value, query, children } = props;
 
-  const searchParams = useSearchParams();
-  const isActive = searchParams.get(query) === value;
+  const pathname = usePathname();
+  const isActive = pathname.includes("/company/" + value);
 
   return (
     <Link
       href={{
-        query: {
-          [query]: value,
-        },
+        pathname: "/company/" + value,
+        query,
       }}
       className={cn(
         "bg-secondary text-textForeground font-semibold text-xs py-1 flex items-center justify-center gap-x-2 px-2 rounded-sm transition-colors duration-200 ease-in-out",

@@ -1,4 +1,8 @@
-export function LocationIcon(props: Readonly<React.SVGProps<SVGSVGElement>>) {
+import { memo } from "react";
+
+export const LocationIcon = memo(function LocationIcon(
+  props: Readonly<React.SVGProps<SVGSVGElement>>
+) {
   return (
     <svg
       width="16"
@@ -16,4 +20,4 @@ export function LocationIcon(props: Readonly<React.SVGProps<SVGSVGElement>>) {
       />
     </svg>
   );
-}
+});

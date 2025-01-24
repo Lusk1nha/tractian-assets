@@ -19,7 +19,6 @@ function DesktopNavbar() {
   return (
     <nav className="w-full bg-tertiary text-white h-12 flex items-center justify-between px-4 gap-x-2">
       <Logo />
-
       <GetCompanies />
     </nav>
   );
@@ -28,7 +27,7 @@ function DesktopNavbar() {
 function MobileNavbar() {
   return (
     <nav className="w-full bg-tertiary text-white h-12 py-2 flex items-center justify-between px-4 gap-x-2">
-      <Logo />
+      <Logo className="w-20 h-20" />
       <GetCompanies />
     </nav>
   );

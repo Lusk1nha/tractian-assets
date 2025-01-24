@@ -1,4 +1,8 @@
-export function AlertIcon(props: Readonly<React.SVGProps<SVGSVGElement>>) {
+import { memo } from "react";
+
+export const AlertIcon = memo(function AlertIcon(
+  props: Readonly<React.SVGProps<SVGSVGElement>>
+) {
   return (
     <svg
       width="14"
@@ -6,6 +10,7 @@ export function AlertIcon(props: Readonly<React.SVGProps<SVGSVGElement>>) {
       viewBox="0 0 14 14"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <path
         d="M7 0C3.13437 0 0 3.13437 0 7C0 10.8656 3.13437 14 7 14C10.8656 14 14 10.8656 14 7C14 3.13437 10.8656 0 7 0ZM7 12.8125C3.79063 12.8125 1.1875 10.2094 1.1875 7C1.1875 3.79063 3.79063 1.1875 7 1.1875C10.2094 1.1875 12.8125 3.79063 12.8125 7C12.8125 10.2094 10.2094 12.8125 7 12.8125Z"
@@ -17,4 +22,4 @@ export function AlertIcon(props: Readonly<React.SVGProps<SVGSVGElement>>) {
       />
     </svg>
   );
-}
+});

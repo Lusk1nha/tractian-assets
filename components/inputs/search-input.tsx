@@ -3,17 +3,27 @@
 import { cn } from "@/lib/utils";
 import { SearchIcon } from "../icons/search-icon";
 
+import { useDebouncedCallback } from "use-debounce";
+
 interface ISearchInputProps {
   name: string;
   placeholder?: string;
-  value?: string;
   onChange: (value: string) => void;
 
+  value?: string;
   className?: string;
 }
 
 export function SearchInput(props: Readonly<ISearchInputProps>) {
-  const { name, placeholder, value, onChange, className } = props;
+  const { name, placeholder, onChange, className } = props;
+
+  const onDebounce = useDebouncedCallback((value) => {
+    if (value.length === 0) {
+      return onChange("");
+    }
+
+    return onChange(value);
+  }, 500);
 
   return (
     <div className="w-full flex items-center h-[45px] gap-x-3">
@@ -24,8 +34,7 @@ export function SearchInput(props: Readonly<ISearchInputProps>) {
           className
         )}
         name={name}
-        onChange={(e) => onChange(e.target.value)}
-        value={value ?? ""}
+        onChange={(e) => onDebounce(e.target.value)}
         placeholder={placeholder}
       />
 

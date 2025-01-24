@@ -1,4 +1,8 @@
-export function EnergyIcon(props: Readonly<React.SVGProps<SVGSVGElement>>) {
+import { memo } from "react";
+
+export const EnergyIcon = memo(function EnergyIcon(
+  props: Readonly<React.SVGProps<SVGSVGElement>>
+) {
   return (
     <svg
       width="14"
@@ -14,4 +18,4 @@ export function EnergyIcon(props: Readonly<React.SVGProps<SVGSVGElement>>) {
       />
     </svg>
   );
-}
+});

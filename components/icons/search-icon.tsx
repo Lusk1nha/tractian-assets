@@ -1,4 +1,8 @@
-export function SearchIcon(props: Readonly<React.SVGProps<SVGSVGElement>>) {
+import { memo } from "react";
+
+export const SearchIcon = memo(function SearchIcon(
+  props: Readonly<React.SVGProps<SVGSVGElement>>
+) {
   return (
     <svg
       width="14"
@@ -14,4 +18,4 @@ export function SearchIcon(props: Readonly<React.SVGProps<SVGSVGElement>>) {
       />
     </svg>
   );
-}
+});

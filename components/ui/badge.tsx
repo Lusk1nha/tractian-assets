@@ -15,7 +15,7 @@ export function Badge(props: Readonly<IBadgeProps>) {
   return (
     <div
       className={cn(
-        "items-center flex border h-8 rounded-md px-4 text-sm font-medium  gap-x-1.5 transition-colors",
+        "items-center flex border h-8 rounded-md px-4 text-sm font-medium  gap-x-1.5 transition-colors cursor-default select-none",
         isActive
           ? "bg-primary text-white border-primary"
           : "text-textLight border-border",

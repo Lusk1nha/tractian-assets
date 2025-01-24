@@ -1,4 +1,6 @@
-export function ChevronDownIcon(
+import { memo } from "react";
+
+export const ChevronDownIcon = memo(function ChevronDownIcon(
   props: Readonly<React.SVGProps<SVGSVGElement>>
 ) {
   return (
@@ -16,4 +18,4 @@ export function ChevronDownIcon(
       />
     </svg>
   );
-}
+});
