@@ -17,16 +17,19 @@ interface IDragAndDropTextProps {
   getRootProps: <T extends DropzoneRootProps>(props?: T) => T;
 
   hasError: boolean;
+
+  disabled?: boolean;
 }
 
 export function DragAndDropContent(props: Readonly<IDragAndDropTextProps>) {
-  const { children, icon, getRootProps, hasError } = props;
+  const { children, icon, getRootProps, hasError, disabled = false } = props;
 
   return (
     <div
       className={cn(
         "w-full h-full bg-inputBackground border-2 border-dashed rounded-lg flex flex-col gap-1 p-6 items-center justify-center select-none cursor-pointer border-borderPrimary hover:bg-accent transition-all",
-        hasError && "border-red-500"
+        hasError && "border-red-500",
+        disabled && "opacity-50 pointer-events-none"
       )}
       {...getRootProps()}
     >

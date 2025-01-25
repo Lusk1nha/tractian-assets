@@ -78,6 +78,7 @@ export function DragAndDrop(props: Readonly<IDragAndDropProps>) {
           icon={icon}
           getRootProps={getRootProps}
           hasError={error}
+          disabled={disabled}
         >
           <input onBlur={onBlur} {...getInputProps()} />
         </DragAndDropContent>

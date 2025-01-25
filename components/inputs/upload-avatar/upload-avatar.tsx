@@ -1,3 +1,4 @@
+import { X } from "lucide-react";
 import { DragAndDrop } from "../drag-and-drop/drag-and-drop";
 import { UploadAvatarContent } from "./upload-avatar-content";
 
@@ -49,9 +50,14 @@ export function UploadAvatar(props: Readonly<IUploadAvatarProps>) {
   return (
     <div
       id={componentName}
-      className="max-w-[336px] max-h-[226px] flex overflow-hidden rounded-lg"
+      className="max-w-[336px] max-h-[226px] flex overflow-hidden relative rounded-lg"
     >
       <UploadAvatarContent value={value} />
+      <div className="bg-black/15 absolute w-full h-full top-0 right-0 flex justify-end items-start p-2">
+        <button className="text-white" onClick={() => onChange(null)}>
+          <X className="w-4 h-4" />
+        </button>
+      </div>
     </div>
   );
 }

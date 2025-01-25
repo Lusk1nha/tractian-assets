@@ -1,12 +1,14 @@
+"use client";
+
 import { Persona } from "@/components/ui/persona";
 
 interface IAssetDetailsProps {
-  equipment: string;
-  responsible: string;
+  equipment?: string;
+  responsibles: string[];
 }
 
 export function AssetDetails(props: Readonly<IAssetDetailsProps>) {
-  const { equipment, responsible } = props;
+  const { equipment = "", responsibles } = props;
 
   return (
     <div className="w-full flex flex-col gap-y-6">
@@ -16,7 +18,11 @@ export function AssetDetails(props: Readonly<IAssetDetailsProps>) {
       <hr className="w-full text-border" />
 
       <DetailParagraph label="Responsáveis">
-        <Persona name={responsible} />
+        <div className="flex flex-wrap gap-x-4 gap-y-2">
+          {responsibles.map((responsible) => (
+            <Persona key={responsible} name={responsible} />
+          ))}
+        </div>
       </DetailParagraph>
     </div>
   );

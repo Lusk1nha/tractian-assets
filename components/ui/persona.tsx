@@ -1,5 +1,8 @@
+"use client";
+
 import { getInitials } from "@/helpers/persona";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 interface IPersonaProps {
   name: string;
@@ -8,6 +11,18 @@ interface IPersonaProps {
 
 export function Persona(props: Readonly<IPersonaProps>) {
   const { image, name } = props;
+
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+
+    return () => setIsMounted(false);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
 
   const initials = getInitials(name, 1);
 
