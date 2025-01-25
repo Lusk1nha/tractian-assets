@@ -20,15 +20,15 @@ const spinnerVariants = cva(
         primary: "[&>div]:bg-primary",
         secondary: "[&>div]:bg-secondary",
         destructive: "[&>div]:bg-destructive",
-        muted: "[&>div]:bg-muted-foreground",
+        muted: "[&>div]:bg-muted-foreground"
       },
       size: {
         sm: "size-4",
         default: "size-5",
-        lg: "size-8",
-      },
+        lg: "size-8"
+      }
     },
-    defaultVariants: { variant: "default", size: "default" },
+    defaultVariants: { variant: "default", size: "default" }
   }
 );
 
@@ -42,7 +42,7 @@ export interface SpinnerProps
 const LoadingSpinner = ({
   className,
   variant,
-  size = "default",
+  size = "default"
 }: SpinnerProps) => (
   <div
     role="status"
@@ -62,7 +62,7 @@ const LoadingSpinner = ({
           origin-[center_190%] rounded-full opacity-[0.1] will-change-transform"
         style={{
           transform: `rotate(${i * 30}deg)`,
-          animationDelay: `${(i * 0.083).toFixed(3)}s`,
+          animationDelay: `${(i * 0.083).toFixed(3)}s`
         }}
         aria-hidden="true"
       />

@@ -1,122 +1,104 @@
-"use client";
+import React, { useMemo, useState, useCallback } from "react";
+import { FixedSizeList as List, ListChildComponentProps } from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer"; // se quiser se adaptar automaticamente ao espaço
+import { buildTree, TreeNode } from "@/helpers/adaptive-tree";
+import { NodeEntity } from "@/types/nodes";
+import { NodeTree } from "../node-tree/node-tree";
 
-import { getStringToSearch } from "@/lib/string";
-import { Assets } from "@/types/assets";
-import { Locations } from "@/types/locations";
-import { useMemo } from "react";
-import { NodeTree } from "./node-tree";
+interface FlatItem {
+  node: TreeNode<NodeEntity>;
+  depth: number;
+}
 
 interface IRenderAssetsTreeProps {
   companyId: string;
-  search?: string;
-
-  assets: Assets[];
-  locations: Locations[];
-}
-
-// Define the TreeNode interface
-export interface TreeNode<T> {
-  id: string;
-  data: T;
-  children: TreeNode<T>[];
-  type: "location" | "asset";
+  nodes: NodeEntity[];
 }
 
 export function RenderAssetsTree(props: Readonly<IRenderAssetsTreeProps>) {
-  const { companyId, assets, locations, search } = props;
+  const { companyId, nodes } = props;
 
-  const nodes = useMemo(() => {
-    if (!assets || !locations) return [];
+  const tree = useMemo(() => buildTree(nodes), [nodes]);
 
-    const allItems = [
-      ...locations.map((loc) => ({ ...loc, type: "location" as const })),
-      ...assets.map((asset) => ({ ...asset, type: "asset" as const })),
-    ];
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
-    if (!search || !search.length) return allItems;
+  const toggleNode = useCallback(
+    (nodeId: string) => {
+      setExpanded((prev) => {
+        const newSet = new Set(prev);
 
-    return allItems.filter((asset) => {
-      const searchWithoutAccents = getStringToSearch(search);
-
-      const nameWithoutAccents = getStringToSearch(asset.name);
-      return nameWithoutAccents.includes(searchWithoutAccents);
-    });
-  }, [assets, locations, search]);
-
-  // Usage in your component
-  const tree = useMemo(() => {
-    // Step 2: Create a map of all nodes by their IDs
-    const nodeMap = new Map<
-      string,
-      TreeNode<Locations | (Assets & { type: "location" | "asset" })>
-    >();
-
-    // Initialize nodes for all items
-    nodes.forEach((item) => {
-      nodeMap.set(item.id, {
-        id: item.id,
-        data: item,
-        children: [],
-        type: item.type,
-      });
-    });
-
-    // Keep track of nodes that have been attached
-    const attachedNodeIds = new Set<string>();
-
-    // Step 3: Build the tree
-    nodes.forEach((item) => {
-      const node = nodeMap.get(item.id)!;
-
-      // Attach to parent based on parentId
-      if (item.parentId) {
-        const parentNode = nodeMap.get(item.parentId);
-        if (parentNode) {
-          parentNode.children.push(node);
-          attachedNodeIds.add(item.id);
-        }
-      }
-
-      // For assets, also attach to location based on locationId
-      if (item.type === "asset" && item.locationId) {
-        const locationNode = nodeMap.get(item.locationId);
-        if (locationNode) {
-          locationNode.children.push(node);
-          attachedNodeIds.add(item.id);
+        if (newSet.has(nodeId)) {
+          newSet.delete(nodeId);
         } else {
-          console.warn(
-            `Location with ID ${item.locationId} not found for asset ${item.id}`
-          );
+          newSet.add(nodeId);
         }
+        return newSet;
+      });
+    },
+    [setExpanded]
+  );
+
+  const flatList = useMemo<FlatItem[]>(() => {
+    const items: FlatItem[] = [];
+
+    function traverse(node: TreeNode<NodeEntity>, depth: number) {
+      items.push({ node, depth });
+
+      if (expanded.has(node.id)) {
+        node.children.forEach((child) => {
+          traverse(child, depth + 1);
+        });
       }
+    }
 
-      // No need to add to roots here; we'll collect unattached nodes later
-    });
+    tree.forEach((root) => traverse(root, 0));
+    return items;
+  }, [tree, expanded]);
 
-    // Step 4: Collect roots (nodes that have not been attached to any parent or location)
-    const roots: TreeNode<
-      Locations | (Assets & { type: "location" | "asset" })
-    >[] = [];
+  const Row = ({ index, style }: ListChildComponentProps) => {
+    const { node, depth } = flatList[index];
 
-    nodeMap.forEach((node, id) => {
-      if (!attachedNodeIds.has(id)) {
-        roots.push(node);
-      }
-    });
+    const isOpen = expanded.has(node.id);
 
-    return roots;
-  }, [nodes]);
+    return (
+      <div style={style} className="px-2">
+        <div className="pl-2" style={{ paddingLeft: depth * 20 }}>
+          <NodeTree
+            node={node}
+            companyId={companyId}
+            isOpen={isOpen}
+            onToggle={toggleNode}
+          />
+        </div>
+      </div>
+    );
+  };
+
+  if (!flatList.length) {
+    return (
+      <div className="w-full h-full flex flex-col items-center justify-center py-3">
+        <div className="text-xs md:text-sm text-center text-textMedium">
+          Nenhum ativo encontrado
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="w-full h-full flex flex-col py-3">
-      {Object.values(tree).map((node) => (
-        <NodeTree
-          nodeIndex={0}
-          key={node.id}
-          companyId={companyId}
-          node={node}
-        />
-      ))}
+    <div className="w-full h-[700px]">
+      <AutoSizer>
+        {({ height, width }) => (
+          <List
+            height={height}
+            width={width}
+            itemCount={flatList.length}
+            itemSize={32}
+            className="scrollbar scrollbar-w-1 !scrollbar-thumb-textBold hover:!scrollbar-thumb-secondary"
+          >
+            {Row}
+          </List>
+        )}
+      </AutoSizer>
     </div>
   );
 }

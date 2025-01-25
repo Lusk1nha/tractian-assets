@@ -23,7 +23,7 @@ export function CompanyRedirectButton(
     <Link
       href={{
         pathname: "/company/" + value,
-        query,
+        query
       }}
       className={cn(
         "bg-secondary text-textForeground font-semibold text-xs py-1 flex items-center justify-center gap-x-2 px-2 rounded-sm transition-colors duration-200 ease-in-out",

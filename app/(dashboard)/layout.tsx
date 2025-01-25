@@ -1,7 +1,8 @@
 import { Navbar } from "@/components/navbar";
+import { waitFor } from "@/lib/mock";
 
 export default async function Layout({
-  children,
+  children
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <div className="bg-appBackground w-full h-screen relative flex flex-col pb-12 lg:pb-0">

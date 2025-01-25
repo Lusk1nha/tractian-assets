@@ -37,7 +37,7 @@ export function UploadAvatar(props: Readonly<IUploadAvatarProps>) {
           multiple={false}
           accept={{
             "image/png": [".png"],
-            "image/jpeg": [".jpg", ".jpeg"],
+            "image/jpeg": [".jpg", ".jpeg"]
           }}
           error={error}
           disabled={disabled}
@@ -47,7 +47,10 @@ export function UploadAvatar(props: Readonly<IUploadAvatarProps>) {
   }
 
   return (
-    <div id={componentName} className="max-w-[336px] max-h-[226px] flex overflow-hidden rounded-lg">
+    <div
+      id={componentName}
+      className="max-w-[336px] max-h-[226px] flex overflow-hidden rounded-lg"
+    >
       <UploadAvatarContent value={value} />
     </div>
   );

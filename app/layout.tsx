@@ -7,11 +7,11 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Tractian - Frontend Challenge",
   description:
-    "This is a frontend challenge for Tractian to create a assets management system.",
+    "This is a frontend challenge for Tractian to create a assets management system."
 };
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {

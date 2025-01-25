@@ -5,7 +5,7 @@ import { TractianRepo } from "../repositories/tractian-repo";
 function createTractianService(): TractianService {
   const apiInstance = axios.create({
     baseURL: "https://fake-api.tractian.com",
-    timeout: 10000,
+    timeout: 10000
   });
 
   const repository = new TractianRepo(apiInstance);

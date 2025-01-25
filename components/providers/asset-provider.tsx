@@ -10,7 +10,7 @@ interface IAssetContext {
 
 export const AssetContext = createContext<IAssetContext>({
   asset: null,
-  setAsset: () => {},
+  setAsset: () => {}
 });
 
 interface IAssetProviderProps {

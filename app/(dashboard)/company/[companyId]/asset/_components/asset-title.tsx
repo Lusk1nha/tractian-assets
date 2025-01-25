@@ -1,17 +1,26 @@
-import { BoltIcon } from "@/components/icons/bolt-icon";
+import { CriticalIndicator } from "@/components/indicators/critical-indicator";
+import { EnergyIndicator } from "@/components/indicators/energy-indicator";
+import { OperationalIndicator } from "@/components/indicators/operational-indicator";
 import { cn } from "@/lib/utils";
-import { div } from "framer-motion/client";
 
 interface IAssetTitleProps {
   title: string;
-  isSensor?: boolean;
+
+  isEnergy?: boolean;
+  isOperational?: boolean;
   isCritical?: boolean;
 
   className?: string;
 }
 
 export function AssetTitle(props: Readonly<IAssetTitleProps>) {
-  const { title, className, isSensor = false, isCritical = false } = props;
+  const {
+    title,
+    className,
+    isEnergy = false,
+    isOperational = false,
+    isCritical = false
+  } = props;
 
   return (
     <div
@@ -21,20 +30,9 @@ export function AssetTitle(props: Readonly<IAssetTitleProps>) {
       )}
     >
       <h2 className="text-textBolder text-lg font-semibold">{title}</h2>
-      {isSensor && <SensorIndicator />}
+      {isEnergy && <EnergyIndicator />}
+      {isOperational && <OperationalIndicator />}
       {isCritical && <CriticalIndicator />}
     </div>
   );
 }
-
-function SensorIndicator() {
-  return (
-    <div className="flex items-center justify-center">
-      <BoltIcon className="text-primary" />
-    </div>
-  );
-}
-
-function CriticalIndicator() {
-  return <div className="w-2 h-2 bg-danger rounded-full" />;
-} 

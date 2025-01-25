@@ -34,9 +34,9 @@ export function SearchAssets(props: Readonly<ISearchAssetsProps>) {
       <div className="w-full h-full">
         <GetAssetsTree
           companyId={companyId}
-          search={search}
           assets={assets}
           locations={locations}
+          search={search}
         />
       </div>
     </div>

@@ -4,6 +4,8 @@ import { cn } from "@/lib/utils";
 import { SearchIcon } from "../icons/search-icon";
 
 import { useDebouncedCallback } from "use-debounce";
+import { memo, useCallback, useState } from "react";
+import { X } from "lucide-react";
 
 interface ISearchInputProps {
   name: string;
@@ -14,16 +16,27 @@ interface ISearchInputProps {
   className?: string;
 }
 
-export function SearchInput(props: Readonly<ISearchInputProps>) {
+const DEBOUNCE_DELAY = 500;
+
+export const SearchInput = memo(function SearchInput(
+  props: Readonly<ISearchInputProps>
+) {
   const { name, placeholder, onChange, className } = props;
 
-  const onDebounce = useDebouncedCallback((value) => {
-    if (value.length === 0) {
-      return onChange("");
-    }
+  const [value, setValue] = useState<string>(props.value ?? "");
 
-    return onChange(value);
-  }, 500);
+  const onDebounce = useDebouncedCallback((value) => {
+    onChange(value);
+  }, DEBOUNCE_DELAY);
+
+  const onEnter = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter") {
+        onChange(value);
+      }
+    },
+    [value, onChange]
+  );
 
   return (
     <div className="w-full flex items-center h-[45px] gap-x-3">
@@ -34,13 +47,37 @@ export function SearchInput(props: Readonly<ISearchInputProps>) {
           className
         )}
         name={name}
-        onChange={(e) => onDebounce(e.target.value)}
+        value={value}
+        onChange={(e) => {
+          setValue(e.target.value);
+          onDebounce(e.target.value);
+        }}
+        onKeyDown={onEnter}
         placeholder={placeholder}
       />
 
-      <div className="w-8 h-full flex items-center justify-center text-textBolder">
-        <SearchIcon className="w-4 h-4" />
+      <div className="flex items-center gap-x-1">
+        {value.length > 0 && (
+          <button
+            type="button"
+            className="w-8 h-full flex items-center justify-center text-textBolder"
+            onClick={() => {
+              setValue("");
+              onChange("");
+            }}
+          >
+            <X className="w-4 h-4" />
+          </button>
+        )}
+
+        <button
+          type="button"
+          className="w-8 h-full flex items-center justify-center text-textBolder"
+          onClick={() => onChange(value)}
+        >
+          <SearchIcon className="w-4 h-4" />
+        </button>
       </div>
     </div>
   );
-}
+});

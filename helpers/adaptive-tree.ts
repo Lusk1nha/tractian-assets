@@ -1,44 +1,53 @@
-type Tree<T> = {
-  [key: string]: T & {
-    nodes: T[];
-  };
-};
+import { NodeEntity } from "@/types/nodes";
 
-type Item = {
+export interface TreeNode<T> {
+  type: "location" | "asset";
   id: string;
-  parentId?: string;
-};
-
-function getInitialTree<T extends Item>(items: T[]) {
-  return items.filter((item) => !item.parentId);
+  data: T;
+  children: TreeNode<T>[];
 }
 
-function generateTree<T extends Item>(items: T[], item: T): Tree<T> {
-  if (!items.length) return {};
+export function buildTree(nodes: NodeEntity[]): TreeNode<NodeEntity>[] {
+  const nodeMap = new Map<string, TreeNode<NodeEntity>>();
 
-  const currentNode = item;
+  nodes.forEach((item) => {
+    nodeMap.set(item.id, {
+      id: item.id,
+      data: item,
+      children: [],
+      type: item.type
+    });
+  });
 
-  const nodes = items.filter((i) => i.parentId === currentNode.id);
+  const attachedNodeIds = new Set<string>();
 
-  if (!nodes.length) {
-    return { [currentNode.id]: { ...currentNode, nodes: [] } };
-  }
+  nodes.forEach((item) => {
+    const currentNode = nodeMap.get(item.id);
+    if (!currentNode) return;
 
-  const tree = nodes.reduce((acc, node) => {
-    const children = generateTree(items, node);
-    return { ...acc, ...children };
-  }, {});
+    if (item.parentId) {
+      const parentNode = nodeMap.get(item.parentId);
+      if (parentNode) {
+        parentNode.children.push(currentNode);
+        attachedNodeIds.add(item.id);
+      }
+    }
 
-  return { [currentNode.id]: { ...currentNode, nodes: Object.values(tree) } };
-}
+    if (item.type === "asset" && item.locationId) {
+      const locationNode = nodeMap.get(item.locationId);
+      if (locationNode) {
+        locationNode.children.push(currentNode);
+        attachedNodeIds.add(item.id);
+      }
+    }
+  });
 
-export function createTree<T extends Item>(items: T[]): Tree<T> {
-  const initial = getInitialTree(items);
+  const roots: TreeNode<NodeEntity>[] = [];
+  nodeMap.forEach((node, id) => {
+    if (!attachedNodeIds.has(id)) {
+      roots.push(node);
+    }
+  });
 
-  const tree = initial.reduce((acc, item) => {
-    const children = generateTree(items, item);
-    return { ...acc, ...children };
-  }, {});
-
-  return tree;
+  return roots;
 }

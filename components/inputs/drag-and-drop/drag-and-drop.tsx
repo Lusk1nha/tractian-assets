@@ -33,7 +33,7 @@ export function DragAndDrop(props: Readonly<IDragAndDropProps>) {
     accept = undefined,
     multiple = true,
     disabled = false,
-    error = false,
+    error = false
   } = props;
 
   const [_, setIsDraggingInside] = useState(false);

@@ -26,8 +26,8 @@ export default async function CompanyLayout(
           <Suspense
             fallback={
               <div className="w-full h-full flex flex-col items-center justify-center gap-y-2">
-                <LoadingSpinner variant="primary" className="w-10 h-10" />
-                <span className="text-primary">Buscando Ativos...</span>
+                <LoadingSpinner variant="secondary" className="w-10 h-10" />
+                <span className="text-secondary">Buscando Ativos...</span>
               </div>
             }
           >

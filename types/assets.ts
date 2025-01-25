@@ -1,4 +1,6 @@
 export interface Assets {
+  type: "asset";
+
   id: string;
   locationId?: string;
   name: string;

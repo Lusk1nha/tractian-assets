@@ -1,6 +1,6 @@
 import tractianService from "@/shared/http/tractian-instance";
 import { SearchAssets } from "./search-assets";
-
+import { waitFor } from "@/lib/mock";
 
 interface ICompanyAssetsProps {
   companyId: string;
@@ -23,9 +23,10 @@ export async function CompanyAssets(props: Readonly<ICompanyAssetsProps>) {
 
   const [assets, locations] = await Promise.all([
     getAssets(companyId),
-    getLocations(companyId),
+    getLocations(companyId)
   ]);
 
+  await waitFor(1000);
 
   return (
     <SearchAssets

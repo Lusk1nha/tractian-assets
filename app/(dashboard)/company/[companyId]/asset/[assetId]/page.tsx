@@ -18,8 +18,8 @@ interface AssetForm {
 export default function Page() {
   const form = useForm<AssetForm>({
     defaultValues: {
-      image: undefined,
-    },
+      image: undefined
+    }
   });
 
   return (
