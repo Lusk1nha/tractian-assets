@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
     const url = new URL(`/company/${company.id}`, request.url);
     const searchParams = new URLSearchParams(url.search);
 
-    searchParams.set("name", company.name);
+    searchParams.set("companyName", company.name);
 
     url.search = searchParams.toString();
 

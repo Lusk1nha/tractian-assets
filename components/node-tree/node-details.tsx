@@ -29,7 +29,7 @@ export function NodeDetails(props: Readonly<INodeDetailsProps>) {
         className="flex items-center"
         href={{
           pathname: `/company/${companyId}/asset/${nodeId}`,
-          query: { name }
+          query: { companyName: name }
         }}
         onClick={() => setAsset(node as any)}
         passHref
