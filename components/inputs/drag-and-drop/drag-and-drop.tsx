@@ -45,7 +45,7 @@ export function DragAndDrop(props: Readonly<IDragAndDropProps>) {
     }
 
     onChange(files);
-  }, []);
+  }, [maxFiles, onChange]);
 
   const onDropRejected = useCallback((rejectedFiles: FileRejection[]) => {
     if (rejectedFiles.length === 0) {
